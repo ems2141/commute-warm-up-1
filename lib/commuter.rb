@@ -11,15 +11,32 @@ class Commuter
 
     csv_data_array.each do |line|
       array = line.split(",")
-      results[array[0]] = [{
-          week: array[1].to_i,
-          day: array[2],
-          mode: array[3],
-          inbound: array[4].to_i,
-          outbound: array[5].to_i,
-          distance: array[6].to_f
-      }]
+
+      if results[array[0]] == nil
+        results[array[0]] = [{
+                                 week: array[1].to_i,
+                                 day: array[2],
+                                 mode: array[3],
+                                 inbound: array[4].to_i,
+                                 outbound: array[5].to_i,
+                                 distance: array[6].to_f
+                             }]
+      else
+        results[array[0]]<< {
+            week: array[1].to_i,
+            day: array[2],
+            mode: array[3],
+            inbound: array[4].to_i,
+            outbound: array[5].to_i,
+            distance: array[6].to_f
+        }
+      end
     end
     results
+
+    people = results.keys
+    people.each do |person|
+      results[person].sort_by {|week, day, mode, inbound, outbound, distance| week}
+    end
   end
 end
